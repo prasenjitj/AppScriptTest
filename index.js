@@ -1,122 +1,85 @@
-var data = [
-  [
-    '158056294',
-    '[Parent Tracking Bug] [Motorcycles] [en-IN] Monthly Data Ingestion',
-    'In-Progress',
-    '1/18/2023',
-    '11/18/2022',
-    'NO',
-    'djoao,abhinavrai',
-    '',
-    '',
-    'Autos | Motorcycles en-IN Regular Ingestion',
-    'arturosanchez@google.com',
-    'P2',
-    'S2',
-    'epic',
-    'ACCEPTED',
-    "Summary: Feed for October has been completed. Feed for November hasn't arrived yet.\n\nLW: October ingestion is completed. Feed for November hasn't arrived yet.\n\nTW: No AIs until next feed arrives.\n\nOTD: 11/18/2022",
-  ],
-  [
-    '158622139',
-    '[Parent Tracking Bug] Create wikiart pipeline',
-    'In-Progress',
-    '1/29/2021',
-    '1/31/2023',
-    'NO',
-    'gargabhishek, bhamidipatim',
-    '',
-    'bhamidipatim',
-    'WikiArt Data Ingestion',
-    'gargabhishek@google.com',
-    'P2',
-    'S1',
-    'epic',
-    'ACCEPTED',
-    'Summary: Initiating the static mapping changes for recon, and also initiated experiments for changes verify.\n\nLW:\n\n- Worked on the ketl changes for [static-mapping](https://ketl.corp.google.com/flow/HEAD/wikiart_test_recon;draftName=original/editor) on sample data.\n  - Generated recon [evidence](https://data.corp.google.com/cnsviewer/file?query=%2Fcns%2Fin-d%2Fhome%2Fdaas-dev-team%2Fketl%2Fworkflows%2Fwikiart%Q%2Frefcon_test%2F2023-01-09-20-18-45%2F&user=) for sample-data.\n  - Initiated experiment: [wikiart_02_static_recon_02](https://flower.corp.google.com/detail/6159fc87e0a389c3/keexp?keExpId=wikiart_02_static_recon_02) with recon evidence for verify recon.\n   - Verify changes on experiment. \n \nTW:\n\n- Complete ketl changes for static mapping.\n- Initiate experiment for verification.',
-    'bhamidipatim',
-  ],
-  [
-    '158813219',
-    '[Parent Tracking Bug] [Motorcycles] [id-ID] Monthly Data Ingestion',
-    'In-Progress',
-    '1/31/2023',
-    '12/31/2022',
-    'NO',
-    'Shunguan, ludovicoc',
-    'ludovicoc',
-    '',
-    'Autos | Motorcycles id-ID Regular Ingestion',
-    'shunguan@google.com',
-    'P2',
-    'S2',
-    'epic',
-    'ACCEPTED',
-    'Summary: Monthly ingestion\n\nLW:\n\nb/182882127(Fuel price ingestion):\n\n* Data Ingestion is completed\n\nb/171016946(Specs/Multi-city price ingestion) :\n\n* Data Ingestion is completed\n\nTW:\n\nb/182882127(Fuel price ingestion) :\n\n* No further action until Jan. Feed arrives\n\nb/171016946(Specs/Multi-city price ingestion) :\n\n* No further action until Jan. Feed arrives\n',
-  ],
+const sampleData = [
+  {
+    id: 1,
+    primary: 'John,Mary',
+    secondary: 'Mike,Sophia',
+    reviewer: 'Lucy,Jack',
+    mentor: 'Steve',
+    title: 'Sample Project',
+    projectStatus: 'In Progress',
+    otd: '2022-01-01',
+    eta: '2022-02-01',
+    vfOrg: 'VF Corp',
+    project: 'VF Project',
+    assignee: 'John',
+    priority: 'High',
+    severity: 'Critical',
+    type: 'Bug',
+    status: 'Open',
+    note: 'This is a sample project',
+  },
+  {
+    id: 2,
+    primary: '',
+    secondary: '',
+    reviewer: '',
+    mentor: '',
+    title: 'Sample Project 2',
+    projectStatus: 'Completed',
+    otd: '2022-03-01',
+    eta: '2022-04-01',
+    vfOrg: 'VF Corp',
+    project: 'VF Project',
+    assignee: 'Mary',
+    priority: 'Low',
+    severity: 'Minor',
+    type: 'Enhancement',
+    status: 'Closed',
+    note: 'This is another sample project',
+  },
 ];
 
-function foo(data) {
-  data = data.map((item) => ({
-    id: item[0],
-    title: item[1],
-    projectStatus: item[2],
-    otd: item[3],
-    eta: item[4],
-    vfOrg: item[5],
-    primary: item[6],
-    secondary: item[7],
-    reviewer: item[8],
-    project: item[9],
-    assignee: item[10],
-    priority: item[11],
-    severity: item[12],
-    type: item[13],
-    status: item[14],
-    note: item[15],
-    mentor: item[16],
-  }));
-  // console.log(data)
-  // data = data.filter((item) => item.status =="ACCEPTED");
-  return data;
-}
-
-const data2 = foo(data);
-
+/**
+ * Flattens an array of data objects
+ * @param {Array} data - An array of data objects to be flattened
+ * @return {Array} flattenedData - An array of flattened data objects
+ */
 function flattenData(data) {
-  const flattenedData = data
-    .map((item) => {
-      const keys = ['primary', 'secondary', 'reviewer'];
-      const names = keys.map((key) => {
-        const namesArray = item[key]
-          ? item[key].split(',').map((name) => name.trim())
-          : [''];
-        return namesArray.map((name) => {
-          return {
-            [key]: name,
-            id: item.id,
-            title: item.title,
-            projectStatus: item.projectStatus,
-            otd: item.otd,
-            eta: item.eta,
-            vfOrg: item.vfOrg,
-            project: item.project,
-            assignee: item.assignee,
-            priority: item.priority,
-            severity: item.severity,
-            type: item.type,
-            status: item.status,
-            note: item.note,
-          };
+  const flattenedData = data.map((item) => {
+    const keys = ['primary', 'secondary', 'reviewer', 'mentor'];
+    let flattenedObjects = [];
+    keys.forEach((key) => {
+      const namesArray = item[key]
+        ? item[key].split(',').map((name) => name.trim())
+        : [''];
+      namesArray.forEach((name) => {
+        let obj = {};
+        keys.forEach((k) => {
+          if (k === key) {
+            obj[k] = name;
+          } else {
+            obj[k] = '';
+          }
         });
+        obj.id = item.id;
+        obj.title = item.title;
+        obj.projectStatus = item.projectStatus;
+        obj.otd = item.otd;
+        obj.eta = item.eta;
+        obj.vfOrg = item.vfOrg;
+        obj.project = item.project;
+        obj.assignee = item.assignee;
+        obj.priority = item.priority;
+        obj.severity = item.severity;
+        obj.type = item.type;
+        obj.status = item.status;
+        obj.note = item.note;
+        flattenedObjects.push(obj);
       });
-      const mentor = item.mentor
-        ? [{ mentor: item.mentor, ...item }]
-        : [{ mentor: '', ...item }];
-      names.push(mentor);
-      return names.flat();
-    })
-    .flat();
-  return flattenedData;
+    });
+    return flattenedObjects;
+  });
+  return [].concat.apply([], flattenedData);
 }
-console.log(flattenData(data));
+
+console.log(flattenData(sampleData));
