@@ -76,27 +76,43 @@ function foo(data) {
     note: item[15],
     mentor: item[16],
   }));
-  // console.log(data);
+  console.log(data);
   // data = data.filter((item) => item.status =="ACCEPTED");
   return data;
 }
 
 var map = foo(data);
 
-function flaten(map) {
-  let newData = [];
-  for (let item of map) {
-    console.log(item.primary);
-    if (item.primary.includes(',')) {
-      let tempPrimary = item.primary.split(',');
-      for (let i of tempPrimary) {
-        item.primary = i;
-        newData.push(item);
-      }
-    }
-  }
-  console.log(newData.length);
+const flattenedData = data
+  .map((item) => {
+    const primary = item.primary.split(',').map((name) => {
+      return {
+        id: item.id,
+        primary: name.trim(),
+      };
+    });
+    const secondary = item.secondary.split(',').map((name) => {
+      return {
+        id: item.id,
+        secondary: name.trim(),
+      };
+    });
+    const reviewer = item.reviewer.split(',').map((name) => {
+      return {
+        id: item.id,
+        reviewer: name.trim(),
+      };
+    });
+    const mentor = item.mentor
+      ? [
+          {
+            id: item.id,
+            mentor: item.mentor,
+          },
+        ]
+      : [];
+    return [...primary, ...secondary, ...reviewer, ...mentor];
+  })
+  .flat();
 
-  console.log(newData);
-}
-flaten(map);
+console.log(flattenedData);
