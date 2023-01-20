@@ -81,26 +81,71 @@ function foo(data) {
   return data;
 }
 
-var map = foo(data);
+var data2 = foo(data);
 
-const flattenedData = data
+const flattenedData = data2
   .map((item) => {
     const primary = item.primary.split(',').map((name) => {
       return {
         id: item.id,
         primary: name.trim(),
+        secondary: item.secondary,
+        reviewer: item.reviewer,
+        mentor: item.mentor,
+        title: item.title,
+        projectStatus: item.projectStatus,
+        otd: item.otd,
+        eta: item.eta,
+        vfOrg: item.vfOrg,
+        project: item.project,
+        assignee: item.assignee,
+        priority: item.priority,
+        severity: item.severity,
+        type: item.type,
+        status: item.status,
+        note: item.note,
       };
     });
     const secondary = item.secondary.split(',').map((name) => {
       return {
         id: item.id,
         secondary: name.trim(),
+        primary: item.primary,
+        reviewer: item.reviewer,
+        mentor: item.mentor,
+        title: item.title,
+        projectStatus: item.projectStatus,
+        otd: item.otd,
+        eta: item.eta,
+        vfOrg: item.vfOrg,
+        project: item.project,
+        assignee: item.assignee,
+        priority: item.priority,
+        severity: item.severity,
+        type: item.type,
+        status: item.status,
+        note: item.note,
       };
     });
     const reviewer = item.reviewer.split(',').map((name) => {
       return {
         id: item.id,
         reviewer: name.trim(),
+        primary: item.primary,
+        secondary: item.secondary,
+        mentor: item.mentor,
+        title: item.title,
+        projectStatus: item.projectStatus,
+        otd: item.otd,
+        eta: item.eta,
+        vfOrg: item.vfOrg,
+        project: item.project,
+        assignee: item.assignee,
+        priority: item.priority,
+        severity: item.severity,
+        type: item.type,
+        status: item.status,
+        note: item.note,
       };
     });
     const mentor = item.mentor
@@ -108,6 +153,18 @@ const flattenedData = data
           {
             id: item.id,
             mentor: item.mentor,
+            title: item.title,
+projectStatus: item.projectStatus,
+otd: item.otd,
+eta: item.eta,
+vfOrg: item.vfOrg,
+project: item.project,
+assignee: item.assignee,
+priority: item.priority,
+severity: item.severity,
+type: item.type,
+status: item.status,
+note: item.note,
           },
         ]
       : [];
@@ -116,3 +173,23 @@ const flattenedData = data
   .flat();
 
 console.log(flattenedData);
+
+
+title: item.title,
+projectStatus: item.projectStatus,
+otd: item.otd,
+eta: item.eta,
+vfOrg: item.vfOrg,
+project: item.project,
+assignee: item.assignee,
+priority: item.priority,
+severity: item.severity,
+type: item.type,
+status: item.status,
+note: item.note,
+
+id: item.id,
+primary: item.primary,
+secondary: item.secondary,
+reviewer: item.reviewer,
+mentor: item.mentor,
