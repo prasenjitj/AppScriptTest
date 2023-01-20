@@ -76,120 +76,47 @@ function foo(data) {
     note: item[15],
     mentor: item[16],
   }));
-  console.log(data);
+  // console.log(data)
   // data = data.filter((item) => item.status =="ACCEPTED");
   return data;
 }
 
-var data2 = foo(data);
+const data2 = foo(data);
 
-const flattenedData = data2
-  .map((item) => {
-    const primary = item.primary.split(',').map((name) => {
-      return {
-        id: item.id,
-        primary: name.trim(),
-        secondary: item.secondary,
-        reviewer: item.reviewer,
-        mentor: item.mentor,
-        title: item.title,
-        projectStatus: item.projectStatus,
-        otd: item.otd,
-        eta: item.eta,
-        vfOrg: item.vfOrg,
-        project: item.project,
-        assignee: item.assignee,
-        priority: item.priority,
-        severity: item.severity,
-        type: item.type,
-        status: item.status,
-        note: item.note,
-      };
-    });
-    const secondary = item.secondary.split(',').map((name) => {
-      return {
-        id: item.id,
-        secondary: name.trim(),
-        primary: item.primary,
-        reviewer: item.reviewer,
-        mentor: item.mentor,
-        title: item.title,
-        projectStatus: item.projectStatus,
-        otd: item.otd,
-        eta: item.eta,
-        vfOrg: item.vfOrg,
-        project: item.project,
-        assignee: item.assignee,
-        priority: item.priority,
-        severity: item.severity,
-        type: item.type,
-        status: item.status,
-        note: item.note,
-      };
-    });
-    const reviewer = item.reviewer.split(',').map((name) => {
-      return {
-        id: item.id,
-        reviewer: name.trim(),
-        primary: item.primary,
-        secondary: item.secondary,
-        mentor: item.mentor,
-        title: item.title,
-        projectStatus: item.projectStatus,
-        otd: item.otd,
-        eta: item.eta,
-        vfOrg: item.vfOrg,
-        project: item.project,
-        assignee: item.assignee,
-        priority: item.priority,
-        severity: item.severity,
-        type: item.type,
-        status: item.status,
-        note: item.note,
-      };
-    });
-    const mentor = item.mentor
-      ? [
-          {
+function flattenData(data) {
+  const flattenedData = data
+    .map((item) => {
+      const keys = ['primary', 'secondary', 'reviewer'];
+      const names = keys.map((key) => {
+        const namesArray = item[key]
+          ? item[key].split(',').map((name) => name.trim())
+          : [''];
+        return namesArray.map((name) => {
+          return {
+            [key]: name,
             id: item.id,
-            mentor: item.mentor,
             title: item.title,
-projectStatus: item.projectStatus,
-otd: item.otd,
-eta: item.eta,
-vfOrg: item.vfOrg,
-project: item.project,
-assignee: item.assignee,
-priority: item.priority,
-severity: item.severity,
-type: item.type,
-status: item.status,
-note: item.note,
-          },
-        ]
-      : [];
-    return [...primary, ...secondary, ...reviewer, ...mentor];
-  })
-  .flat();
-
-console.log(flattenedData);
-
-
-title: item.title,
-projectStatus: item.projectStatus,
-otd: item.otd,
-eta: item.eta,
-vfOrg: item.vfOrg,
-project: item.project,
-assignee: item.assignee,
-priority: item.priority,
-severity: item.severity,
-type: item.type,
-status: item.status,
-note: item.note,
-
-id: item.id,
-primary: item.primary,
-secondary: item.secondary,
-reviewer: item.reviewer,
-mentor: item.mentor,
+            projectStatus: item.projectStatus,
+            otd: item.otd,
+            eta: item.eta,
+            vfOrg: item.vfOrg,
+            project: item.project,
+            assignee: item.assignee,
+            priority: item.priority,
+            severity: item.severity,
+            type: item.type,
+            status: item.status,
+            note: item.note,
+          };
+        });
+      });
+      const mentor = item.mentor
+        ? [{ mentor: item.mentor, ...item }]
+        : [{ mentor: '', ...item }];
+      names.push(mentor);
+      return names.flat();
+    })
+    .flat();
+  return flattenedData;
+}
+console.log(flattenData(data));
