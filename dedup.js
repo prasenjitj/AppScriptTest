@@ -201,17 +201,21 @@ const data = [
   },
 ];
 
+/**
+ * @function dedup
+ * @param {Array} data - The array of objects to be deduped
+ * @returns {Array} dedupedData - The deduped array of objects
+ * @description Removes the duplicate objects from the input array based on their 'id' property
+ */
 function dedup(data) {
-  let results = [];
-  const dedupData = data.map((item) => {
-    let ids = [];
-    if (!ids.includes(item.id)) {
-      results.push(item);
-    }
-  });
-  return results;
+  if (!data) {
+    return;
+  }
+  const ids = new Set();
+  return data.filter(({ id }) => !ids.has(id) && ids.add(id));
 }
+
 const ddata = dedup(data);
-console.log(data.lenght);
-console.log(ddata.lenght);
+// console.log(data.length);
+// console.log(ddata.length);
 console.log(ddata);
