@@ -20,7 +20,7 @@ const sampleData = [
   },
   {
     id: 2,
-    primary: '',
+    primary: 'kumarigeeta@google.com',
     secondary: '',
     reviewer: '',
     mentor: '',
@@ -50,7 +50,9 @@ function flattenData(data) {
     let flattenedObjects = [];
     keys.forEach((key) => {
       const namesArray = item[key]
-        ? item[key].split(',').map((name) => name.trim())
+        ? item[key]
+            .split(',')
+            .map((name) => name.trim().replace('@google.com', ''))
         : [''];
       namesArray.forEach((name) => {
         let obj = {};
